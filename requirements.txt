@@ -1,3 +1,5 @@
 Flask
 twilio
 gunicorn
+requests
+openai
