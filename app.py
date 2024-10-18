@@ -1,7 +1,7 @@
 import requests
 import sqlite3
-from flask import Flask, request, jsonify
-from twilio.twiml.messaging_response import MessagingResponse, Message
+from flask import Flask, request
+from twilio.twiml.messaging_response import MessagingResponse
 import openai
 
 # API Anahtarları
@@ -19,43 +19,39 @@ c = conn.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS messages (user TEXT, message TEXT)''')
 conn.commit()
 
+# Ana Sayfa Rotası (http://127.0.0.1:5000/)
+@app.route("/", methods=["GET"])
+def home():
+    return "Bot is running!"
+
+# WhatsApp Rotası
 @app.route("/whatsapp", methods=["POST"])
 def whatsapp_bot():
     incoming_msg = request.values.get('Body', '').lower()
     from_number = request.values.get('From', '')
     resp = MessagingResponse()
-    
+    msg = resp.message()
+
     # Mesajı Veritabanına Kaydetme
     c.execute("INSERT INTO messages (user, message) VALUES (?, ?)", (from_number, incoming_msg))
     conn.commit()
 
+    # Kullanıcıdan gelen mesajlara göre yanıt
     if "menu" in incoming_msg:
-        # Kullanıcıya interaktif butonlar gönder
-        send_interactive_menu(resp)
+        msg.body("Merhaba! Seçenekler:\n1. Hava Durumu\n2. Döviz Kuru\n3. Sohbet")
     elif "hava" in incoming_msg:
         weather_info = get_weather()
-        resp.message(weather_info)
+        msg.body(weather_info)
     elif "döviz" in incoming_msg:
         exchange_info = get_exchange_rate()
-        resp.message(exchange_info)
+        msg.body(exchange_info)
     else:
         chat_response = chat_with_gpt(incoming_msg)
-        resp.message(chat_response)
+        msg.body(chat_response)
 
     return str(resp)
 
-def send_interactive_menu(resp):
-    """Kullanıcıya interaktif menü gönderir."""
-    msg = Message()
-    msg.body("Merhaba! Aşağıdaki seçeneklerden birini seçin:")
-    
-    # Interaktif Butonlar
-    msg.add_button("Hava Durumu", "hava")
-    msg.add_button("Döviz Kuru", "döviz")
-    msg.add_button("ChatGPT ile Sohbet", "sohbet")
-
-    resp.append(msg)
-
+# Hava Durumu Fonksiyonu
 def get_weather():
     """OpenWeatherMap API'den hava durumu bilgisi getirir."""
     url = f"http://api.openweathermap.org/data/2.5/weather?q=Ankara&appid={OPENWEATHER_API_KEY}&units=metric"
@@ -67,6 +63,7 @@ def get_weather():
     description = data["weather"][0]["description"]
     return f"Ankara'da hava {description}, sıcaklık {temp}°C."
 
+# Döviz Kuru Fonksiyonu
 def get_exchange_rate():
     """ExchangeRate API'den döviz kuru bilgisi getirir."""
     url = f"https://v6.exchangerate-api.com/v6/{EXCHANGERATE_API_KEY}/latest/USD"
@@ -80,6 +77,7 @@ def get_exchange_rate():
     except KeyError:
         return "Döviz kuru bilgisi bulunamadı."
 
+# ChatGPT Yanıtı Fonksiyonu
 def chat_with_gpt(user_message):
     """OpenAI API ile ChatGPT üzerinden akıllı yanıt döndürür."""
     response = openai.Completion.create(
@@ -92,5 +90,6 @@ def chat_with_gpt(user_message):
     )
     return response.choices[0].text.strip()
 
+# Uygulamayı Başlatma
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
