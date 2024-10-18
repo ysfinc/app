@@ -38,7 +38,7 @@ def whatsapp_bot():
 
     # Kullanıcıdan gelen mesajlara göre yanıt
     if "menu" in incoming_msg:
-        msg.body("Merhaba! Seçenekler:\n1. Hava Durumu\n2. Döviz Kuru\n3. Sohbet")
+        msg.body("Merhaba! Seçenekler:\n1. 🌦 Hava Durumu\n2. 💸 Döviz Kuru\n3. 🤖 Sohbet")
     elif "hava" in incoming_msg:
         weather_info = get_weather()
         msg.body(weather_info)
@@ -57,7 +57,7 @@ def get_weather():
     url = f"http://api.openweathermap.org/data/2.5/weather?q=Ankara&appid={OPENWEATHER_API_KEY}&units=metric"
     response = requests.get(url)
     data = response.json()
-    if data["cod"] != 200:
+    if data.get("cod") != 200:
         return "Hava durumu bilgisine ulaşılamadı."
     temp = data["main"]["temp"]
     description = data["weather"][0]["description"]
@@ -69,7 +69,7 @@ def get_exchange_rate():
     url = f"https://v6.exchangerate-api.com/v6/{EXCHANGERATE_API_KEY}/latest/USD"
     response = requests.get(url)
     data = response.json()
-    if data["result"] != "success":
+    if data.get("result") != "success":
         return "Döviz kuru bilgisine ulaşılamadı."
     try:
         tl_rate = data["conversion_rates"]["TRY"]
