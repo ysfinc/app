@@ -15,23 +15,17 @@ def whatsapp_webhook():
     response = MessagingResponse()
 
     if incoming_msg:
-        message = response.message("Lütfen aşağıdaki seçeneklerden birini seçin:")
-        message.media("https://example.com/sigorta-banner.jpg")  # İsteğe bağlı resim ekleme
-        
-        # Etkileşimli butonlar
-        message.body("")
-        message.action({
-            "type": "quick_reply",  # Kullanıcının seçim yapabileceği butonlar
-            "options": [
-                {"label": "Yapboz Sigortası", "value": "yapboz"},
-                {"label": "Trafik Sigortası", "value": "trafik"},
-                {"label": "İş Yeri Sigortası", "value": "is_yeri"},
-                {"label": "Dask Sigortası", "value": "dask"},
-                {"label": "Diğer İşlemler", "value": "diger"}
-            ]
-        })
-    
+        # Mesaj Gövdesi
+        message = response.message("Lütfen aşağıdaki seçeneklerden birini yazın:\n"
+                                   "1. Yapboz Sigortası\n"
+                                   "2. Trafik Sigortası\n"
+                                   "3. İş Yeri Sigortası\n"
+                                   "4. Dask Sigortası\n"
+                                   "5. Diğer İşlemler")
+
     return str(response)
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    # Render'ın verdiği PORT numarasını kullanıyoruz
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
