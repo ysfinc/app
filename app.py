@@ -19,8 +19,7 @@ def whatsapp_webhook():
 
     # Kullanıcıdan gelen mesajlara göre yanıtlar ve müşteri temsilcisine yönlendirme
     if '1' in gelen_mesaj or 'yapboz' in gelen_mesaj:
-        yanit.message("✨ *Yapboz Sigortası*
-Evinizdeki riskleri kapsar. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
+        yanit.message("****")
     elif '2' in gelen_mesaj or 'trafik' in gelen_mesaj:
         yanit.message("🚗 *Trafik Sigortası*
 Araç kazaları ve hasarlar için zorunlu bir sigortadır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
