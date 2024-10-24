@@ -19,17 +19,13 @@ def whatsapp_webhook():
 
     # Kullanıcıdan gelen mesajlara göre yanıtlar ve müşteri temsilcisine yönlendirme
     if '1' in incoming_msg or 'yapboz' in incoming_msg:
-        response.message("🧩 Yapboz Sigortası, evinizdeki riskleri kapsamaktadır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)\nMüşteri temsilcisine bağlanmak ister misiniz? (Evet/Hayır)")
-        response.message(f"Yapboz Sigortası müşteri temsilcisine bağlanmak için bu numaraya ulaşabilirsiniz: {YAPBOZ_WHATSAPP_GROUP}")
+        response.message("🧩 Yapboz Sigortası, evinizdeki riskleri kapsamaktadır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
     elif '2' in incoming_msg or 'trafik' in incoming_msg:
-        response.message("🚗 Trafik Sigortası, araç kazaları ve hasarlar için zorunlu bir sigortadır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)\nMüşteri temsilcisine bağlanmak ister misiniz? (Evet/Hayır)")
-        response.message(f"Trafik Sigortası müşteri temsilcisine bağlanmak için bu numaraya ulaşabilirsiniz: {TRAFIK_WHATSAPP_GROUP}")
+        response.message("🚗 Trafik Sigortası, araç kazaları ve hasarlar için zorunlu bir sigortadır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
     elif '3' in incoming_msg or 'iş yeri' in incoming_msg:
-        response.message("🏢 İş Yeri Sigortası, iş yerinizi çeşitli risklere karşı güvence altına alır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)\nMüşteri temsilcisine bağlanmak ister misiniz? (Evet/Hayır)")
-        response.message(f"İş Yeri Sigortası müşteri temsilcisine bağlanmak için bu numaraya ulaşabilirsiniz: {IS_YERI_WHATSAPP_GROUP}")
+        response.message("🏢 İş Yeri Sigortası, iş yerinizi çeşitli risklere karşı güvence altına alır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
     elif '4' in incoming_msg or 'dask' in incoming_msg:
-        response.message("🌍 DASK Sigortası, doğal afetlere karşı zorunlu deprem sigortasıdır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)\nMüşteri temsilcisine bağlanmak ister misiniz? (Evet/Hayır)")
-        response.message(f"DASK Sigortası müşteri temsilcisine bağlanmak için bu numaraya ulaşabilirsiniz: {DASK_WHATSAPP_GROUP}")
+        response.message("🌍 DASK Sigortası, doğal afetlere karşı zorunlu deprem sigortasıdır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
     elif 'evet' in incoming_msg:
         response.message("📄 Lütfen gerekli belgeleri hazırlayın ve bizimle iletişime geçin. Ana menüye dönmek için 'Ana Menü' yazabilirsiniz.")
         # Belgeleri ilgili WhatsApp grubuna iletme
