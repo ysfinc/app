@@ -5,7 +5,7 @@ import requests
 
 app = Flask(__name__)
 
-# Müşteri temsilcisi WhatsApp grup numaraları (ornek grup numaraları)
+# Müşteri temsilcisi WhatsApp grup numaraları (örnek grup numaraları)
 YAPBOZ_WHATSAPP_GROUP = "whatsapp:+12345678901"
 TRAFIK_WHATSAPP_GROUP = "whatsapp:+12345678902"
 IS_YERI_WHATSAPP_GROUP = "whatsapp:+12345678903"
@@ -19,30 +19,23 @@ def whatsapp_webhook():
 
     # Kullanıcıdan gelen mesajlara göre yanıtlar ve müşteri temsilcisine yönlendirme
     if '1' in gelen_mesaj or 'yapboz' in gelen_mesaj:
-        yanit.message("****")
+        yanit.message("🧩 *Yapboz Sigortası*\nKişisel projelerinizi güvence altına alın. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
     elif '2' in gelen_mesaj or 'trafik' in gelen_mesaj:
-        yanit.message("🚗 *Trafik Sigortası*
-Araç kazaları ve hasarlar için zorunlu bir sigortadır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
-    elif '3' in gelen_mesaj or 'ış yeri' in gelen_mesaj:
-        yanit.message("🏢 *İş Yeri Sigortası*
-İş yerinizi çeşitli risklere karşı güvence altına alır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
+        yanit.message("🚗 *Trafik Sigortası*\nAraç kazaları ve hasarlar için zorunlu bir sigortadır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
+    elif '3' in gelen_mesaj or 'iş yeri' in gelen_mesaj:
+        yanit.message("🏢 *İş Yeri Sigortası*\nİş yerinizi çeşitli risklere karşı güvence altına alır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
     elif '4' in gelen_mesaj or 'dask' in gelen_mesaj:
-        yanit.message("🌍 *DASK Sigortası*
-Doğal afetlere karşı zorunlu deprem sigortasıdır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
+        yanit.message("🌍 *DASK Sigortası*\nDoğal afetlere karşı zorunlu deprem sigortasıdır. Daha fazla bilgi almak ister misiniz? (Evet/Hayır)")
     elif 'evet' in gelen_mesaj:
-        yanit.message("📄 Lütfen gerekli belgeleri hazırlayın:
-- Kimlik fotokopisi
-- Fatura belgesi
-- Sigorta poliçesi
-
-Müşteri temsilcisine bağlanıyor..." )
+        yanit.message("📄 Lütfen gerekli belgeleri hazırlayın:\n- Kimlik fotokopisi\n- Fatura belgesi\n- Sigorta poliçesi\n\nMüşteri temsilcisine bağlanıyor...")
         yanit.message("Merhaba, ben müşteri temsilcisi Ahmet. Size nasıl yardımcı olabilirim?")
-        # Belgeleri ilgili WhatsApp grubuna iletme ve müşteri hizmetlerine bağlama
+
+        # Belgeleri ilgili WhatsApp grubuna iletme
         if 'yapboz' in gelen_mesaj:
             belgeyi_gruba_gonder(YAPBOZ_WHATSAPP_GROUP, musteri_numarasi, "Müşteriden gelen belgeler: ...")
         elif 'trafik' in gelen_mesaj:
             belgeyi_gruba_gonder(TRAFIK_WHATSAPP_GROUP, musteri_numarasi, "Müşteriden gelen belgeler: ...")
-        elif 'ış yeri' in gelen_mesaj:
+        elif 'iş yeri' in gelen_mesaj:
             belgeyi_gruba_gonder(IS_YERI_WHATSAPP_GROUP, musteri_numarasi, "Müşteriden gelen belgeler: ...")
         elif 'dask' in gelen_mesaj:
             belgeyi_gruba_gonder(DASK_WHATSAPP_GROUP, musteri_numarasi, "Müşteriden gelen belgeler: ...")
@@ -69,7 +62,6 @@ Müşteri temsilcisine bağlanıyor..." )
 
     return str(yanit)
 
-
 def belgeyi_gruba_gonder(grup_numarasi, musteri_numarasi, mesaj):
     try:
         requests.post(
@@ -79,7 +71,6 @@ def belgeyi_gruba_gonder(grup_numarasi, musteri_numarasi, mesaj):
         )
     except requests.RequestException as e:
         print(f"Mesaj gönderme hatası: {e}")
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
